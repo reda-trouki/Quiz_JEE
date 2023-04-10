@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Login Page</title>
+    <script src="https://kit.fontawesome.com/0afc3e6f7b.js" crossorigin="anonymous"></script>
+</h:head>
+<h:body>
+<h:outputStylesheet library="css" name="index.css"/>
+
+   <h2>Welcome in </h2>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<h:form>
+			<h1>Create Account</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+			<span>or use your email for registration</span>
+			<h:inputText label="nom" value="#{PerssonneBean.nom}">
+				<f:passThroughAttribute name="placeholder"
+        		value="Nom"/>
+			</h:inputText>
+			<h:inputText label="prenom" value="#{PerssonneBean.prenom}">
+				<f:passThroughAttribute name="placeholder"
+        		value="Prenom"/>
+			</h:inputText>
+			<h:inputText type="email" name="Email" value="#{PerssonneBean.login}">
+				<f:passThroughAttribute name="placeholder"
+        		value="Login"/>
+			</h:inputText>
+			<h:inputText type="password" name="Password" value="#{PerssonneBean.password}">
+				<f:passThroughAttribute name="placeholder"
+        		value="Password"/>	
+			</h:inputText>
+			<div style="display: flex; justify-content: space-between;">
+  				<h:selectOneRadio value="#{PerssonneBean.type}">
+  					<f:selectItem itemValue="T" itemLabel="Teacher" />
+  					<f:selectItem itemValue="S" itemLabel="Student" />
+				</h:selectOneRadio>
+			</div>
+			
+			<h:commandButton action="#{PerssonneBean.SignUp}" id="signUp" value="Sign Up"/>
+		</h:form>
+	</div>
+	<div class="form-container sign-in-container">
+		<h:form>
+			<h1>Sign in</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+			<span>or use your account</span>
+			<h:inputText id="email" type="email" label="Email" value="#{PerssonneBean.login}">
+				<f:passThroughAttribute name="placeholder"
+        		value="Email"/>
+			</h:inputText>
+			<h:inputSecret id="password" label="Password" value="#{PerssonneBean.password}" >
+				<f:passThroughAttribute name="placeholder"
+        		value="Password"/>
+			</h:inputSecret>
+			<a href="#">Forgot your password?</a>
+			<h:commandButton id="signIn" action="#{PerssonneBean.authenticate}" value="Sign In"/>
+		</h:form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn" onclick="remove()">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hello, Friend!</h1>
+				<p>Enter your personal details and start Creating and Passing Multiple Quiz</p>
+				<button class="ghost" id="signUp" onclick="add()">Sign Up</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	const container = document.getElementById('container');
+	function add(){
+		container.classList.add("right-panel-active");
+	}
+	function remove(){
+		container.classList.remove("right-panel-active");
+	}
+</script>
+
+</h:body>
+</html>
