@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<h:head>
+	<script src="https://kit.fontawesome.com/0afc3e6f7b.js" crossorigin="anonymous"></script>
+	<title>Questions</title>
+	<style>
+		.mini_button , .modify_button{
+			background-color: #f44336;
+  			color: white;
+  			border: none;
+  			padding: 10px 12px;
+  			border-radius: 4px;
+  			margin:10px;
+  			font-size: 12px;
+  			cursor: pointer;
+		}
+		.mini_button > input, .modify_button > input{
+			background-color:#f44336;
+			border:none;
+			display: none;
+		}
+		.modify_button{
+			background-color:green;
+		}
+		ul{
+			list-style: none;
+		}
+		.correct, .incorrect{
+  			padding: 8px;
+  			border-radius: 4px;
+  			font-weight: bold;
+  			width:80%;
+  			margin:0 auto;
+  			margin-bottom: 5px;
+  			margin-left:-10px;
+  			display:flex;
+		}
+		.form-container {
+  max-width: 500px;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], 
+.form-container input[type=email], 
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 20px 0;
+  border: none;
+  background: #fff;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, 
+.form-container input[type=email]:focus, 
+.form-container textarea:focus {
+  outline: none;
+  background-color: #ddd;
+}
+
+/* Set a style for the submit button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add a zoom animation */
+.form-container.animate {
+  -webkit-animation: zoom 0.6s;
+  animation: zoom 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes zoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
+}
+	</style>
+</h:head>
+<h:body>
+
+<h:outputStylesheet library="css" name="dahsboard.css"/>
+
+	<div class='dashboard'>
+    <ui:insert>
+    	<ui:include src="/templates/navBar.xhtml" />
+    </ui:insert>
+<div class='dashboard-app'>
+        <header class='dashboard-toolbar'><a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a></header>
+        <div class='dashboard-content'>
+            <div class='container'>
+                <div class='card'>
+                    <div class='card-header'>
+                        <h1>Questions</h1>
+                    </div>
+                    <div class='card-body'>
+                    	<div class="header-card">
+                        	<div><p>Create the Questions you like </p></div>
+                        	<div>
+                        		<button onclick="openForm()" type="button" class="secondary-button"><i class="fa-solid fa-plus"></i> create Question</button>
+                        	</div>
+                        </div>
+                        <div style="display: flex">
+                        <c:forEach items="${PerssonneBean.getQuestions()}" var="Question">
+                        <div class="quiz_card" style="margin:10px; float:left;width:auto">
+							<h2 class="quiz_title">${Question.getEnence()}</h2>
+							<ul>
+								<c:forEach items="${QuestionBean.getReponses(Question.getId())}" var="reponse">
+									<c:if test="${reponse.getEtat() eq 'True'}">
+										
+										 <li class="correct"><i class="fa-solid fa-check" style="color: green"></i>${reponse.getEnence()}</li> 
+									</c:if>
+									<c:if test="${reponse.getEtat() ne 'True'}">
+										<li class="incorrect">${reponse.getEnence()}</li>
+									</c:if>
+								</c:forEach>
+							</ul>
+							<div style="display: flex">
+							<h:form>
+								<h:outputLabel for="delete" class="mini_button">
+									<h:commandButton id="delete" action="#{PerssonneBean.deleteQuestion(Question.getId())}" />
+									<i class="fa-solid fa-trash"></i> Delete
+								</h:outputLabel>
+							</h:form>
+							<h:form>
+							<h:outputLabel for="modify" class="modify_button">
+							<h:commandButton id="modify" action="#{PerssonneBean.modifyQuestion(Question.getId())}" class="" onclick="modify()">
+								<i class="fa-solid fa-pen-nib"></i> Modify
+							</h:commandButton>
+							</h:outputLabel>
+							</h:form>
+						</div>
+						</div>
+						
+						</c:forEach>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	</div>
+	
+<div class="form-popup" id="myForm">
+   <h:form class="form-container">
+      <h2>Create Quiz</h2>
+      <h:outputLabel value="Question" for="enence" />
+      <h:inputText  value="#{PerssonneBean.enence}" id="enence" label="enence" required="true" >
+      	<f:passThroughAttribute name="placeholder"
+        			value="Question"/>
+      </h:inputText>
+      
+      <h:commandButton action="#{PerssonneBean.creeQuestion}" value="submit" class="btn" />
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+   </h:form>
+</div>
+<script>
+function openForm() {
+	  document.getElementById("myForm").style.display = "block";
+	}
+
+	function closeForm() {
+	  document.getElementById("myForm").style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the form, close it
+	window.onclick = function(event) {
+	  if (event.target == document.getElementById("myForm")) {
+	    document.getElementById("myForm").style.display = "none";
+	  }
+	}
+</script>
+</h:body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<h:head>
+	<script src="https://kit.fontawesome.com/0afc3e6f7b.js" crossorigin="anonymous"></script>
+	<title>home</title>
+	<style>
+		.noButton{
+			background-color:#FCFCFD;
+			border:none;
+			cursor:pointer;
+		}
+	</style>
+</h:head>
+<h:body>
+<h:outputStylesheet library="css" name="QuizH.css"/>
+	<ui:insert>
+		<ui:include src="/templates/Header.xhtml" />
+	</ui:insert>
+	<main>
+		<c:forEach items="#{PerssonneBean.quizs}" var="Quiz">
+		<h:form>
+  			<div class="card" style="margin:10px; float:left;">
+    			<h:graphicImage library="assets" name="QuizImage.jpg" rendered="true" class="card-img" />
+    			<div class="card-header">
+      				<h2 class="card-title">
+      					${Quiz.getLibelle()}
+      				</h2>
+    			</div>
+    			<div class="card-body">
+      				<p>
+        				Created By ${Quiz.getPoseur().getNom()} ${Quiz.getPoseur().getPrenom()}
+      				</p>
+    			</div>
+    			<!-- HTML !-->
+				<h:outputLabel class="button-30" for="Start">
+				    <h:commandButton id="Start" value="Start Quiz " action="#{QuizBean.passQuiz(Quiz)}" styleClass="noButton"/> 
+					<span class="fas fa-arrow-right" style="margin-left: 5px"></span>
+				</h:outputLabel>
+  			</div>
+  		</h:form>
+		</c:forEach>
+	</main>
+	<script>
+		const profile_inf = document.getElementById("profile_info");
+		function showForm() {
+			if(profile_inf.style.display == "block") profile_inf.style.display = "none";
+			else profile_inf.style.display = "block";
+		}
+	</script>
+</h:body>
+</html>

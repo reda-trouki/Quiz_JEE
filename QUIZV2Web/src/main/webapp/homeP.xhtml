@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<h:head>
+	<script src="https://kit.fontawesome.com/0afc3e6f7b.js" crossorigin="anonymous"></script>
+	<title>home</title>
+	<style>
+	.mini_button , .modify_button{
+			background-color: #f44336;
+  			color: white;
+  			border: none;
+  			padding: 10px 12px;
+  			border-radius: 4px;
+  			margin:10px;
+  			font-size: 12px;
+  			cursor: pointer;
+		}
+		.mini_button > input, .modify_button > input{
+			background-color:#f44336;
+			border:none;
+			display: none;
+		}
+		.modify_button{
+			background-color:green;
+		}
+		/* The form container */
+.form-container {
+  max-width: 500px;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], 
+.form-container input[type=email], 
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 20px 0;
+  border: none;
+  background: #fff;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, 
+.form-container input[type=email]:focus, 
+.form-container textarea:focus {
+  outline: none;
+  background-color: #ddd;
+}
+
+/* Set a style for the submit button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add a zoom animation */
+.form-container.animate {
+  -webkit-animation: zoom 0.6s;
+  animation: zoom 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes zoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
+}
+	</style>
+</h:head>
+<h:body>
+<h:outputStylesheet library="css" name="dahsboard.css"/>
+
+	<div class='dashboard'>
+    <ui:insert>
+    	<ui:include src="/templates/navBar.xhtml" />
+    </ui:insert>
+    <div class='dashboard-app'>
+        <header class='dashboard-toolbar'><a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a></header>
+        <div class='dashboard-content'>
+            <div class='container'>
+                <div class='card'>
+                    <div class='card-header'>
+                        <h1>Quiz's</h1>
+                    </div>
+                    <div class='card-body'>
+                    	<div class="header-card">
+                        	<div><p>Start Creating Your own Quiz's </p></div>
+                        	<div>
+                        		<button onclick="openForm()" type="button" class="secondary-button"><i class="fa-solid fa-plus"></i> create Quiz</button>
+                        	</div>
+                        </div>
+                        <c:forEach items="#{PerssonneBean.quizs}" var="Quiz">
+                        	<div class="quiz_card" style="margin:10px; float:left;">
+    							<h:graphicImage library="assets" name="QuizImage.jpg" rendered="true" class="card-img" />
+    							<h2 class="quiz_title">
+    								${Quiz.getLibelle()}<br/>
+    								Note de Quiz : ${Quiz.getNote()}
+    							</h2>
+    							<h:form>
+								<h:outputLabel for="delete" class="mini_button">
+									<h:commandButton id="delete" action="#{QuizBean.deleteQuiz(Quiz.getId())}"/>
+									<i class="fa-solid fa-trash"></i> Delete
+								</h:outputLabel>
+								<h:outputLabel for="modify" class="modify_button">
+									<h:commandButton id="modify" action="#{QuizBean.ModifyQuiz(Quiz.getId())}"/>
+									<i class="fa-solid fa-pen-nib"></i> Modify
+								</h:outputLabel>
+							</h:form>
+    						</div>	
+					</c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-popup" id="myForm">
+   <h:form class="form-container">
+      <h2>Create Quiz</h2>
+      <h:outputLabel value="Quiz Label" for="libelle" />
+      <h:inputText  value="#{QuizBean.libelle}" id="libelle" label="libelle" required="true" >
+      	<f:passThroughAttribute name="placeholder"
+        			value="Quiz Label"/>
+      </h:inputText>
+      <h:outputLabel value="Quiz Note" for="note" />
+      <h:inputText  value="#{QuizBean.note}" id="note" label="note" required="true" >
+      	<f:passThroughAttribute name="placeholder"
+        			value="Quiz Note"/>
+      </h:inputText>
+      <h:commandButton action="#{QuizBean.creeQuiz}" value="submit" class="btn" />
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+   </h:form>
+</div>
+<script>
+function openForm() {
+	  document.getElementById("myForm").style.display = "block";
+	}
+
+	function closeForm() {
+	  document.getElementById("myForm").style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the form, close it
+	window.onclick = function(event) {
+	  if (event.target == document.getElementById("myForm")) {
+	    document.getElementById("myForm").style.display = "none";
+	  }
+	}
+</script>
+</h:body>
+</html>

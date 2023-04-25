@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition>
+		<div class="dashboard-nav">
+        <header>
+        	<a href="homeP.xhtml" class="brand-logo">
+        		<i class="fas fa-anchor"></i> 
+        		<span>Quiz</span>
+        	</a>
+        </header>
+        <nav class="dashboard-nav-list">
+        	<a href="homeP.xhtml" class="dashboard-nav-item active">
+        		<i class="fas fa-home"></i>
+            	Quiz 
+            </a>
+            <h:form>
+            <h:commandLink action="#{PerssonneBean.getAllQuestions}" class="dashboard-nav-item ">
+            	<i class="fas fa-tachometer-alt"></i>Questions
+            </h:commandLink>
+            </h:form>
+
+            <a href="#" class="dashboard-nav-item">
+            	<i class="fas fa-user"></i> Profile 
+            </a>
+          <div class="nav-item-divider"></div>
+          <h:form>
+          	<h:commandLink class="dashboard-nav-item" action="#{PerssonneBean.logout}">
+          		<i class="fas fa-sign-out-alt"></i> Logout
+          	</h:commandLink>
+          </h:form>
+        </nav>
+    </div>
+	</ui:composition>
+</h:body>
+</html>

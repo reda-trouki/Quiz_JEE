@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+<h:head>
+</h:head>
+<h:body>
+<ui:composition>
+           <h:outputStylesheet library="css" name="QuizH.css"/>      
+	<header>
+		<div class="logo">
+			<a href="homeA.xhtml">
+				<h:graphicImage library="assets" name="quiz_logo2.svg" rendered="true" />
+			</a>
+		</div>
+		<nav>
+			<ul>	
+				<li>
+				dark/light
+				</li>
+				<li><i class="fa-regular fa-user" onclick="showForm()"></i></li>
+			</ul>
+		</nav>
+		<div id="profile_info">
+			<div class="user_name">
+				<h:outputLabel value="#{PerssonneBean.nom}" />
+				<h:outputLabel value="#{PerssonneBean.prenom}" />
+			</div>
+				<a href="#" class="parametre">
+				<h:graphicImage library="assets" name="settings.svg" rendered="true" width="25" height="25"/>
+				 Settings</a>
+				 <h:form>
+					<h:commandLink action="#{PerssonneBean.logout}" class="parametre">
+						<h:graphicImage library="assets" name="logout.svg" rendered="true" width="25" height="25"/>
+						Logout
+				 	</h:commandLink>
+				 </h:form>
+		</div>
+	</header>
+</ui:composition>
+</h:body>
+</html>

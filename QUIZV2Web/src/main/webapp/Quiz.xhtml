@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+<script src="https://kit.fontawesome.com/0afc3e6f7b.js" crossorigin="anonymous"></script>
+	<title>${QuizBean.getQuiz().getLibelle()}</title>
+	<style>
+		input[type=checkbox]{
+			opacity: 0;
+		}
+		input:checked ~ label {
+			background-color: green;
+			color:#ffffff;
+		}
+		.Question{
+			width: 80%;
+  			height: 600px;
+  			margin: 20px auto;
+  			background-color: #fff;
+  			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  			border-radius: 10px;
+		}
+		input[type=checkbox] ~ label{
+			display: block;
+  			margin-bottom: 10px;
+ 			padding: 10px;
+  			border: 2px solid #ccc;
+  			border-radius: 5px;
+  			cursor: pointer;
+		}
+		table td{
+			display:block;
+			text-align: center;
+		}
+		.NextButton{
+			position: fixed;
+  			right: 0;
+  			margin: 20px;
+  			padding: 10px 20px;
+  			background-color: #007bff;
+  			color: #fff;
+  			border: none;
+  			border-radius: 5px;
+  			font-size: 1.2rem;
+  			text-align: center;
+  			cursor: pointer;
+		}
+		.NextButton:hover{
+			background-color: #0062cc;
+		}
+		.Quiz_title{
+			font-size:2rem;
+			font-family:sans-serif;
+		}
+		.quiz-question{
+			padding: 20px;
+  			font-size: 1.5rem;
+  			text-align: center;
+		}
+		table{
+			width:100%;
+			margin:0 auto;
+		}
+		.score{
+			font-size: 30px;
+  			font-weight: bold;
+  			color: #1abc9c;
+		}
+		.circle{
+			width: 100px;
+ 	 		height: 100px;
+  			border-radius: 50%;
+  			background-color: #e5e5e5;
+  			display: flex;
+  			justify-content: center;
+  			align-items: center;
+		}
+		.message{
+			width:100%;
+			display:flex;
+			align-items:center;
+			font-size:2rem;
+		}
+		.header-card{
+			display:flex;
+			align-items:center;
+			justify-content:space-between;
+		}
+	</style>
+</h:head>
+<h:body>
+<h:outputStylesheet library="css" name="dahsboard.css"/>
+
+		<ui:insert>
+			<ui:include src="/templates/Header.xhtml" />
+		</ui:insert>
+		
+<div class='dashboard-app'>
+        <div class='dashboard-content'>
+            <div class='container'>
+                <div class='card' style="width: 80%">
+                    <div class='card-header'>
+                        <h1>${QuizBean.quiz.getLibelle()} Quiz</h1>
+                    </div>
+                    <div class='card-body'>
+                    	<div class="header-card">
+							${QuizBean.getQuestions()[0].getEnence()}
+						</div>
+							<h:form>
+								<h:selectManyCheckbox value="#{QuizBean.selectedAnswers}" >
+			
+									<c:forEach items="${QuestionBean.getReponses(QuizBean.getQuestions()[0].getId())}" var="reponse">
+                						<f:selectItem itemValue="${reponse.getId()}" itemLabel="${reponse.getEnence()}" />
+                					</c:forEach>
+             
+            					</h:selectManyCheckbox>
+            				<c:if test="#{not empty QuizBean.getQuestions()}">
+            					<h:commandButton class="NextButton" action="#{QuizBean.validateReponse(QuizBean.getQuestions()[0].getId())}" value="Next" />
+            				</c:if>
+           				 </h:form>
+			
+				<c:if test="#{empty QuizBean.getQuestions()}">
+				<center>
+					<h1>Your Score </h1>
+				</center>
+					<div>
+						<center>
+							<div class="circle">
+								<h3 class="score">${QuizBean.getNote()}/20</h3>
+							</div>
+						</center>
+						<c:set var="tmp" value="0" />
+						<c:forEach items="#{QuizBean.getUserAnswer()}" var="Answer">
+							<c:if test="${Answer.getEtat() eq 'True'}">
+								<c:set var="tmp" value="${tmp + 1}" />
+							</c:if>
+						</c:forEach>
+						<div class="message">You Answered ${tmp} Correct</div>
+					</div>
+				</c:if>
+			
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<script>
+		const profile_inf = document.getElementById("profile_info");
+		function showForm() {
+			if(profile_inf.style.display == "block") profile_inf.style.display = "none";
+			else profile_inf.style.display = "block";
+		}
+	</script>
+</h:body>
+</html>
